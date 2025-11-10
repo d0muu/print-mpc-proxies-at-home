@@ -11,14 +11,42 @@ When installing, make sure to add Python to PATH.
 With Python installed, go ahead and download the zip and unzip it wherever you like.
 ![image](https://user-images.githubusercontent.com/103437609/203219985-019cea6e-2a85-4ea8-ba90-b96e7665eae7.png)
 
-I made a couple batch scripts to help with installation if you're not savvy with Python, go ahead and run 1_SETUP.bat and it should make a folder called "images" and one called "venv". Then, it will use pip to install the dependancies from "requirements.txt" into that virtual environment.
+I made a couple batch scripts for windows to help with installation if you're not savvy with Python, go ahead and run 1_SETUP.bat and it should make a folder called "images" and one called "venv". Then, it will use pip to install the dependancies from "requirements.txt" into that virtual environment.
 
 Then, you can run main.py from the command line like "venv\scripts\python main.py", or I have "2_RUN.bat" that you can just click and it will pop up the GUI.
+
+## Linux Manual - with Pyenv
+
+
+```shell
+# to install pyenv:
+## curl -fsSL https://pyenv.run | bash
+# to setup pyenv for your shell see:
+## https://github.com/pyenv/pyenv?tab=readme-ov-file#b-set-up-your-shell-environment-for-pyenv
+
+# create the virtualenv
+pyenv virtualenv proxy-print-pdf  # using system python, which should hopefully be python3
+
+# create the pyenv file so it activates next time you enter this dir
+pyenv local proxy-print-pdf
+
+# activate the virtualenv manually the first time
+pyenv activate proxy-print-pdf
+
+# install the requirements in the virtualenv
+pip install -r requirements.txt
+
+# create the needed folders
+mkdir -p images/crop
+
+# Run the program
+python main.py
+```
 
 # Running the Program
 ![image](https://user-images.githubusercontent.com/103437609/203212112-50db47df-0a4e-4bf2-9c59-a8554f521b7c.png)
 
-First, throw some images in the \images\ folder. Then, when you opem main.py or hit the "Run Cropper" button from the GUI, it will go through all the images and calculate and crop them.
+First, throw some images in the \images\ folder. Then, when you execute main.py or hit the "Run Cropper" button from the GUI, it will go through all the images and calculate and crop them.
 
 You can either use the +/- buttons, left or right click the images themselves, or input whatever number you want (good for basic lands for example). I've included sizing for Letter (8.5" x 11"), A4 (8.27" x 11.69"), and Legal (8 1/2" x 14"), but other options would be easy to add if it's requested. Last, you can name your pdf. You don't need to add a ".pdf", I've got that covered for you.
 
