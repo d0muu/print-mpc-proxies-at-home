@@ -10,7 +10,7 @@ import re
 from PIL import Image, ImageFilter
 import FreeSimpleGUI as sg
 from reportlab.pdfgen import canvas
-from reportlab.lib.pagesizes import letter, A4, legal
+from reportlab.lib.pagesizes import A4, letter, legal
 
 sw, sh = sg.Window.get_screen_size()
 sg.theme("DarkTeal2")
@@ -365,8 +365,8 @@ else:
         "size": (1480, 920),
         "columns": 5,
         # pdf generation options
-        "pagesize": "Letter",
-        "page_sizes": ["Letter", "A4", "Legal"],
+        "pagesize": "A4",
+        "page_sizes": ["A4", "Letter", "Legal"],
         "orient": "Portrait",
         "filename": "_printme",
     }
@@ -449,7 +449,7 @@ while True:
         grey_window = grey_out(window)
         render_window = popup("Rendering...")
         render_window.refresh()
-        lookup = {"Letter": letter, "A4": A4, "Legal": legal}
+        lookup = {"A4": A4, "Letter": letter, "Legal": legal}
         pdf_gen(print_dict, lookup[print_dict["pagesize"]])
         render_window.close()
         grey_window.close()
