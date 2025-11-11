@@ -56,7 +56,7 @@ def grey_out(main_window):
         location=main_window.current_location(more_accurate=True),
         finalize=True,
     )
-    the_grey.disable()
+    safe_disable(the_grey)
     the_grey.refresh()
     return the_grey
 
@@ -380,6 +380,21 @@ for k in window.key_dict.keys():
         window[k].bind("<Button-1>", "-LEFT")
         window[k].bind("<Button-3>", "-RIGHT")
 loading_window.close()
+
+def safe_disable(win):
+    try:
+        for widget in win.TKroot.winfo_children():
+            widget.configure(state='disabled')
+    except Exception:
+        pass
+
+def safe_enable(win):
+    try:
+        for widget in win.TKroot.winfo_children():
+            widget.configure(state='normal')
+    except Exception:
+        pass
+
 while True:
     event, values = window.read()
 
@@ -424,7 +439,7 @@ while True:
 
     if "CROP" in event:
         oldwindow = window
-        oldwindow.disable()
+        safe_disable(oldwindow)
         grey_window = grey_out(window)
 
         img_dict = cropper(image_dir, img_dict)
@@ -432,9 +447,9 @@ while True:
             if img not in print_dict["cards"].keys():
                 print(f"{img} found and added to list.")
                 print_dict["cards"][img] = 1
-                
+
         window = window_setup(print_dict["columns"])
-        window.enable()
+        safe_enable(window)
         window.bring_to_front()
         oldwindow.close()
         grey_window.close()
@@ -445,7 +460,7 @@ while True:
                 window[k].bind("<Button-3>", "-RIGHT")
 
     if "RENDER" in event:
-        window.disable()
+        safe_disable(window)
         grey_window = grey_out(window)
         render_window = popup("Rendering...")
         render_window.refresh()
@@ -453,7 +468,7 @@ while True:
         pdf_gen(print_dict, lookup[print_dict["pagesize"]])
         render_window.close()
         grey_window.close()
-        window.enable()
+        safe_enable(window)
         window.bring_to_front()
         window.refresh()
 
