@@ -1,4 +1,5 @@
 import os
+import sys
 import math
 import json
 import time
@@ -121,9 +122,14 @@ def pdf_gen(p_dict, size):
     pages.save()
     saving_window.close()
     try:
-        subprocess.Popen([pdf_fp], shell=True)
+        if sys.platform.startswith("linux"):
+            subprocess.Popen(["xdg-open", pdf_fp])
+        elif sys.platform == "darwin":
+            subprocess.Popen(["open", pdf_fp])
+        elif sys.platform == "win32":
+            os.startfile(pdf_fp)
     except Exception as e:
-        print(e)
+        print(f"Failed to open PDF: {e}")
 
 
 def cropper(folder, img_dict):
