@@ -101,6 +101,7 @@ def pdf_gen(p_dict, size):
         for n in range(img_dict[img]):
             p, j = divmod(i, pbreak)
             y, x = divmod(j, cols)
+            y = rows - 1 - y  # Flip vertically to start from top
             if j == 0 and i > 0:
                 pages.showPage()
             pages.drawImage(
