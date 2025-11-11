@@ -171,6 +171,7 @@ def cropper(folder, img_dict):
                 crop_im = crop_im.filter(ImageFilter.UnsharpMask(1, 20, 8))
             if cfg.getboolean("Vibrance.Bump"):
                 crop_im = crop_im.filter(lut)
+                print(f"{img_file} - Colour vibrance enhanced using LUT")
             crop_im.save(os.path.join(crop_dir, img_file), quality=98)
     return cache_previews(img_cache, crop_dir) if i>0 else img_dict
 
@@ -434,7 +435,13 @@ while True:
         print_dict["filename"] = window["FILENAME"].get()
 
     if "CONFIG" in event:
-        subprocess.Popen(["config.ini"], shell=True)
+        config_fp = "config.ini"
+        if sys.platform.startswith("linux"):
+            subprocess.Popen(["xdg-open", config_fp])
+        elif sys.platform == "darwin":
+            subprocess.Popen(["open", config_fp])
+        elif sys.platform == "win32":
+            os.startfile(config_fp)
 
     if "SAVE" in event:
         with open(print_json, "w") as fp:
